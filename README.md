@@ -30,9 +30,13 @@ TENANT_ID = <tenant>
 In case you have created yourself the service principal you don't need to execute this step, because what we will do is to retrieve the info is to retrieve the same info that you get on the json while creating the service principal.
 
 First you need to enter the Secrets tab from the AKV
+
 ![Secrets_Azure](./images_readme/Cap1.PNG)
+
 Copy the name the name of that secret, the display-name of your service principal.
+
 ![Secrets_Azure](./images_readme/Cap3.PNG)
+
 Now execute the following command with that display-name.
 ```
 az ad sp list --display-name <name>
@@ -61,7 +65,9 @@ TENANT_ID = <appOwnerTenantId>
 ```
 After this you need to access again the secrets tab and click on the name of the secret that you copied before, to acces the info for that service pricipal.
 You will get a view like this.
+
 ![Secrets_password](./images_readme/Cap2.PNG)
+
 Just click on the button "Show secret" and copy that value. This value is the password that you need to configure on the config.py.
 
 ```
