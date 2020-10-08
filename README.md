@@ -68,12 +68,27 @@ You will get a view like this.
 
 ![Secrets_password](./images_readme/Cap2.PNG)
 
-Just click on the button "Show secret" and copy that value. This value is the password that you need to configure on the config.py.
+Just click on the button "Show secret" and copy the information in "Secret value". This value is the password that you need to configure on the config.py.
 
 ```
 PASSWORD = <secret-value>
 ```
 
-### Create the key inside AKV to be compatible with Ethereum (TODO)
+### Create the key inside AKV to be compatible with Ethereum
+To create the key we will use on the demo you just need to enter the "Keys" tab inside the AKV. And there click on the Generate/Import button that is on top
 
-### Find the key version and set it on config file (TODO)
+Once on the creation of the key make sure to select EC to make it an Elliptic Curve key and set the Elliptic Curve Name to "P-256K" as you can see on the image because that is the name Azure has given to the curve Secp256k1 that is the one used on Ethereum.
+
+![generate](./images_readme/Cap4.PNG)
+
+Enter again on Keys tab from your AKV and click on the key you have just created to see its info.
+
+![key_version](./images_readme/Cap5.PNG)
+
+There you have the version id that you need to paste on the config file.
+
+```
+KEY_VERSION = <version-id>
+```
+
+
