@@ -1,6 +1,6 @@
 ## How to prepare an AKV instance for the demo.
-### Bring up an instance of Azure key vault(TODO)
-First you need to create an Azure Key Vault on your resource group
+### Bring up an instance of Azure key vault
+First you need to create an Azure Key Vault on your resource group, it doesn't need to have any special featurejust follow the steps on the wizard to have it ready.
 
 ### Create a service principal(in case is not created)
 Here at Santander if you ask for a resource group with an Azure Key Vault inside  you should already have a default service principal created already for that resource group.
