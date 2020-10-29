@@ -1,0 +1,6 @@
+eth_keys==0.2.2
+secp256k1==0.13.2
+web3==4.10.0
+eth_account==0.2.3
+ethtoken==0.0.1a4
+azure_storage==0.37.0
