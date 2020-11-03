@@ -4,6 +4,9 @@ import os
 import config
 import util
 import sys
+from random import seed
+from random import randint
+from datetime import datetime
 
 from azure.keyvault import KeyVaultClient, KeyVaultAuthentication
 from azure.common.credentials import ServicePrincipalCredentials
@@ -41,6 +44,7 @@ def sign_keyvault(addressSigner, signingClient, vault_url, key_name, key_version
 if __name__ == "__main__":
     repetitions = int(sys.argv[1])
     destination = sys.argv[2]
+    endpoints_addr = sys.argv[3:]
     os.environ['AZURE_CLIENT_ID'] = config.CLIENT_ID # visible in this process + all children
     os.environ['AZURE_CLIENT_SECRET'] = config.PASSWORD
     os.environ['AZURE_TENANT_ID'] = config.TENANT_ID
@@ -49,9 +53,10 @@ if __name__ == "__main__":
 
     key_client = KeyClient(vault_url=config.VAULT_URL, credential=credential)
     signClient = KeyVaultClient(KeyVaultAuthentication(auth_callback))
-    w3 = Web3(HTTPProvider(config.ETHEREUM_ENDPOINT))
+    web3_endpoints = list(map(lambda x: Web3(HTTPProvider(x)), endpoints_addr))
+    seed(datetime.now())
 
-    test_txn = {'value': 1, 'chainId': None, 'gas': 70000, 'gasPrice': 1000000000, 'nonce': w3.eth.getTransactionCount('0x145dc3442412EdC113b01b63e14e85BA99926830'), 'to': destination}
+    test_txn = {'value': 1, 'chainId': None, 'gas': 70000, 'gasPrice': 1000000000, 'nonce': web3_endpoints[0].eth.getTransactionCount('0x145dc3442412EdC113b01b63e14e85BA99926830'), 'to': destination}
 
     json_key = key_client.get_key("hsm-key").key
     pubkey = util.convert_json_key_to_public_key_bytes(json_key)
@@ -59,11 +64,9 @@ if __name__ == "__main__":
     for i in range (test_txn['nonce'], test_txn['nonce']+repetitions):
         test_txn['nonce'] = i
         address_signer, signed_transaction = sign_keyvault(address_signer, signClient, config.VAULT_URL, config.KEY_NAME, config.KEY_VERSION, test_txn)
-        
-        # print("Signer", address_signer)
-        # print("Unsigned transaction", test_txn)
-        # print("Raw signed tx", signed_transaction.hex())
-        tx_hash = w3.eth.sendRawTransaction(signed_transaction.hex())
+        rand_endpoint_pos = randint(0,len(endpoints_addr)-1)
+        print("Position " + str(rand_endpoint_pos))
+        tx_hash = web3_endpoints[rand_endpoint_pos].eth.sendRawTransaction(signed_transaction.hex())
         print("tx on etherscan: ", "https://rinkeby.etherscan.io/tx/" + tx_hash.hex())
 
     print("Sent whole " + str(repetitions) +  " transactions")
