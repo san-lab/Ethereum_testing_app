@@ -45,7 +45,7 @@ def sign_keyvault(addressSigner, signingClient, vault_url, key_name, key_version
 if __name__ == "__main__":
     repetitions = int(sys.argv[1])
     mode = sys.argv[2]
-    endpoints_addr = sys.argv[4:]
+    endpoints_addr = sys.argv[3:]
     os.environ['AZURE_CLIENT_ID'] = config.CLIENT_ID # visible in this process + all children
     os.environ['AZURE_CLIENT_SECRET'] = config.PASSWORD
     os.environ['AZURE_TENANT_ID'] = config.TENANT_ID
