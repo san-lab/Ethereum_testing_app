@@ -63,13 +63,13 @@ if __name__ == "__main__":
         Bytecode = json.load(f)
     myContract = web3_endpoints[0].eth.contract(abi=ABI, bytecode=Bytecode['object'])
     deployContTx = myContract.constructor('0x145dc3442412EdC113b01b63e14e85BA99926830').buildTransaction({
-        'chainId': 1972,
+        'chainId': None,
         'gas': 4600000,
         'gasPrice': 1000000000,
         'nonce': web3_endpoints[0].eth.getTransactionCount('0x71217b5145aad63387673A39a717e5d2aABD6c5B'),
     })
 
-    sendEthTx = {'value': 1, 'chainId': 1972, 'gas': 70000, 'gasPrice': 1000000000, 'nonce': web3_endpoints[0].eth.getTransactionCount('0x71217b5145aad63387673A39a717e5d2aABD6c5B'), 'to': mode}
+    sendEthTx = {'value': 1, 'chainId': None, 'gas': 70000, 'gasPrice': 1000000000, 'nonce': web3_endpoints[0].eth.getTransactionCount('0x71217b5145aad63387673A39a717e5d2aABD6c5B'), 'to': mode}
 
     if mode == "deploy":
         test_txn = deployContTx
