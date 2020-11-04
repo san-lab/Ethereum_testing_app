@@ -75,6 +75,7 @@ if __name__ == "__main__":
         test_txn = deployContTx
     else:
         test_txn = sendEthTx
+    print(test_txn)
     json_key = key_client.get_key("hsm-key").key
     pubkey = util.convert_json_key_to_public_key_bytes(json_key)
     address_signer = util.public_key_to_address(pubkey[1:])
