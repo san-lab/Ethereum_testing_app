@@ -62,24 +62,23 @@ if __name__ == "__main__":
     with open("./Bytecode.json") as f:
         Bytecode = json.load(f)
     myContract = web3_endpoints[0].eth.contract(abi=ABI, bytecode=Bytecode['object'])
-    deployContTx = myContract.constructor('0x71217b5145aad63387673A39a717e5d2aABD6c5B').buildTransaction({
+    deployContTx = myContract.constructor('0x145dc3442412EdC113b01b63e14e85BA99926830').buildTransaction({
         'chainId': None,
         'gas': 4600000,
         'gasPrice': 1000000000,
-        'nonce': web3_endpoints[0].eth.getTransactionCount('0x71217b5145aad63387673A39a717e5d2aABD6c5B'),
+        'nonce': web3_endpoints[0].eth.getTransactionCount('0xfC288399ee6225BfA6fC3252a9f0DBbFD66b6A42'),
     })
 
-    sendEthTx = {'value': 1, 'chainId': None, 'gas': 70000, 'gasPrice': 1000000000, 'nonce': web3_endpoints[0].eth.getTransactionCount('0x71217b5145aad63387673A39a717e5d2aABD6c5B'), 'to': mode}
+    sendEthTx = {'value': 1, 'chainId': None, 'gas': 70000, 'gasPrice': 1000000000, 'nonce': web3_endpoints[0].eth.getTransactionCount('0x145dc3442412EdC113b01b63e14e85BA99926830'), 'to': mode}
 
     if mode == "deploy":
         test_txn = deployContTx
     else:
         test_txn = sendEthTx
     print(test_txn)
-    json_key = key_client.get_key("santander").key
+    json_key = key_client.get_key("hsm-key").key
     pubkey = util.convert_json_key_to_public_key_bytes(json_key)
     address_signer = util.public_key_to_address(pubkey[1:])
-    #print("Address " + address_signer)
     for i in range (test_txn['nonce'], test_txn['nonce']+repetitions):
         test_txn['nonce'] = i
         address_signer, signed_transaction = sign_keyvault(address_signer, signClient, config.VAULT_URL, config.KEY_NAME, config.KEY_VERSION, test_txn)
