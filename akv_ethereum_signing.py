@@ -44,8 +44,7 @@ def sign_keyvault(addressSigner, signingClient, vault_url, key_name, key_version
 #Find how not to set on environment
 if __name__ == "__main__":
     repetitions = int(sys.argv[1])
-    destination = sys.argv[2]
-    mode = sys.argv[3]
+    mode = sys.argv[2]
     endpoints_addr = sys.argv[4:]
     os.environ['AZURE_CLIENT_ID'] = config.CLIENT_ID # visible in this process + all children
     os.environ['AZURE_CLIENT_SECRET'] = config.PASSWORD
@@ -70,7 +69,7 @@ if __name__ == "__main__":
         'nonce': web3_endpoints[0].eth.getTransactionCount('0x145dc3442412EdC113b01b63e14e85BA99926830'),
     })
 
-    sendEthTx = {'value': 1, 'chainId': None, 'gas': 70000, 'gasPrice': 1000000000, 'nonce': web3_endpoints[0].eth.getTransactionCount('0x145dc3442412EdC113b01b63e14e85BA99926830'), 'to': destination}
+    sendEthTx = {'value': 1, 'chainId': None, 'gas': 70000, 'gasPrice': 1000000000, 'nonce': web3_endpoints[0].eth.getTransactionCount('0x145dc3442412EdC113b01b63e14e85BA99926830'), 'to': mode}
 
     if mode == "deploy":
         test_txn = deployContTx
