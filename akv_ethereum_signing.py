@@ -78,7 +78,7 @@ if __name__ == "__main__":
     print(test_txn)
     json_key = key_client.get_key("santander").key
     pubkey = util.convert_json_key_to_public_key_bytes(json_key)
-    print("Public keys " + pubkey)
+    print("Public keys " + str(pubkey))
     address_signer = util.public_key_to_address(pubkey[1:])
     for i in range (test_txn['nonce'], test_txn['nonce']+repetitions):
         test_txn['nonce'] = i
