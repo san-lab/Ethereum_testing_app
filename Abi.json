@@ -1,0 +1,77 @@
+[
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "name",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "listDocuments",
+		"outputs": [
+			{
+				"components": [
+					{
+						"name": "hash",
+						"type": "string"
+					},
+					{
+						"name": "emittDatabaseID",
+						"type": "uint32"
+					},
+					{
+						"name": "name",
+						"type": "string"
+					}
+				],
+				"name": "_documents",
+				"type": "tuple[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "documentHash",
+				"type": "string"
+			},
+			{
+				"name": "documentName",
+				"type": "string"
+			},
+			{
+				"name": "documentID",
+				"type": "uint32"
+			}
+		],
+		"name": "addDocument",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"name": "assetName",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	}
+]

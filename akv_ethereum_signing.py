@@ -4,6 +4,7 @@ import os
 import config
 import util
 import sys
+import json
 from random import seed
 from random import randint
 from datetime import datetime
@@ -44,7 +45,8 @@ def sign_keyvault(addressSigner, signingClient, vault_url, key_name, key_version
 if __name__ == "__main__":
     repetitions = int(sys.argv[1])
     destination = sys.argv[2]
-    endpoints_addr = sys.argv[3:]
+    mode = sys.argv[3]
+    endpoints_addr = sys.argv[4:]
     os.environ['AZURE_CLIENT_ID'] = config.CLIENT_ID # visible in this process + all children
     os.environ['AZURE_CLIENT_SECRET'] = config.PASSWORD
     os.environ['AZURE_TENANT_ID'] = config.TENANT_ID
@@ -56,8 +58,24 @@ if __name__ == "__main__":
     web3_endpoints = list(map(lambda x: Web3(HTTPProvider(x)), endpoints_addr))
     seed(datetime.now())
 
-    test_txn = {'value': 1, 'chainId': None, 'gas': 70000, 'gasPrice': 1000000000, 'nonce': web3_endpoints[0].eth.getTransactionCount('0x145dc3442412EdC113b01b63e14e85BA99926830'), 'to': destination}
+    with open("./Abi.json") as f:
+        ABI = json.load(f)
+    with open("./Bytecode.json") as f:
+        Bytecode = json.load(f)
+    myContract = web3_endpoints[0].eth.contract(abi=ABI, bytecode=Bytecode['object'])
+    deployContTx = myContract.constructor('0x145dc3442412EdC113b01b63e14e85BA99926830').buildTransaction({
+        'chainId': None,
+        'gas': 4600000,
+        'gasPrice': 1000000000,
+        'nonce': web3_endpoints[0].eth.getTransactionCount('0x145dc3442412EdC113b01b63e14e85BA99926830'),
+    })
 
+    sendEthTx = {'value': 1, 'chainId': None, 'gas': 70000, 'gasPrice': 1000000000, 'nonce': web3_endpoints[0].eth.getTransactionCount('0x145dc3442412EdC113b01b63e14e85BA99926830'), 'to': destination}
+
+    if mode == "deploy":
+        test_txn = deployContTx
+    else:
+        test_txn = sendEthTx
     json_key = key_client.get_key("hsm-key").key
     pubkey = util.convert_json_key_to_public_key_bytes(json_key)
     address_signer = util.public_key_to_address(pubkey[1:])
