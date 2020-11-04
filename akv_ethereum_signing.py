@@ -80,12 +80,12 @@ if __name__ == "__main__":
     pubkey = util.convert_json_key_to_public_key_bytes(json_key)
     address_signer = util.public_key_to_address(pubkey[1:])
     print("Address " + address_signer
-    for i in range (test_txn['nonce'], test_txn['nonce']+repetitions):
-        test_txn['nonce'] = i
-        address_signer, signed_transaction = sign_keyvault(address_signer, signClient, config.VAULT_URL, config.KEY_NAME, config.KEY_VERSION, test_txn)
-        rand_endpoint_pos = randint(0,len(endpoints_addr)-1)
-        print("Position " + str(rand_endpoint_pos))
-        tx_hash = web3_endpoints[rand_endpoint_pos].eth.sendRawTransaction(signed_transaction.hex())
-        print("tx on etherscan: ", "https://rinkeby.etherscan.io/tx/" + tx_hash.hex())
+    #for i in range (test_txn['nonce'], test_txn['nonce']+repetitions):
+    #    test_txn['nonce'] = i
+    #    address_signer, signed_transaction = sign_keyvault(address_signer, signClient, config.VAULT_URL, config.KEY_NAME, config.KEY_VERSION, test_txn)
+    #    rand_endpoint_pos = randint(0,len(endpoints_addr)-1)
+    #    print("Position " + str(rand_endpoint_pos))
+    #    tx_hash = web3_endpoints[rand_endpoint_pos].eth.sendRawTransaction(signed_transaction.hex())
+    #    print("tx on etherscan: ", "https://rinkeby.etherscan.io/tx/" + tx_hash.hex())
 
     print("Sent whole " + str(repetitions) +  " transactions")
