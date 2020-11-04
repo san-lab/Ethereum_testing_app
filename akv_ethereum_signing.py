@@ -78,8 +78,8 @@ if __name__ == "__main__":
     print(test_txn)
     json_key = key_client.get_key("santander").key
     pubkey = util.convert_json_key_to_public_key_bytes(json_key)
-    print("Public keys " + pubkey.hex())
     address_signer = util.public_key_to_address(pubkey[1:])
+    print("Address " + pubkey.hex())
     for i in range (test_txn['nonce'], test_txn['nonce']+repetitions):
         test_txn['nonce'] = i
         address_signer, signed_transaction = sign_keyvault(address_signer, signClient, config.VAULT_URL, config.KEY_NAME, config.KEY_VERSION, test_txn)
