@@ -76,7 +76,7 @@ if __name__ == "__main__":
     else:
         test_txn = sendEthTx
     print(test_txn)
-    json_key = key_client.get_key("santander").key
+    json_key = key_client.get_key(config.KEY_NAME).key
     pubkey = util.convert_json_key_to_public_key_bytes(json_key)
     address_signer = util.public_key_to_address(pubkey[1:])
     for i in range (test_txn['nonce'], test_txn['nonce']+repetitions):
