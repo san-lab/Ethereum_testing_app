@@ -57,10 +57,10 @@ if __name__ == "__main__":
     elif signing_key == "bbva":
         key_name = config.KEY_NAME_BBVA
         key_version = config.KEY_VERSION_BBVA
-    elif signing_key == "bankia";
+    elif signing_key == "bankia":
         key_name = config.KEY_NAME_BANKIA
         key_version = config.KEY_VERSION_BANKIA
-    else
+    else:
         key_name = config.KEY_NAME_TEST
         key_version = config.KEY_VERSION_TEST
 
