@@ -46,7 +46,7 @@ if __name__ == "__main__":
     repetitions = int(sys.argv[1])
     mode = sys.argv[2]
     signing_key = sys.argv[3]
-    endpoints_addr = sys.argv[3:]
+    endpoints_addr = sys.argv[4:]
     os.environ['AZURE_CLIENT_ID'] = config.CLIENT_ID # visible in this process + all children
     os.environ['AZURE_CLIENT_SECRET'] = config.PASSWORD
     os.environ['AZURE_TENANT_ID'] = config.TENANT_ID
@@ -76,12 +76,6 @@ if __name__ == "__main__":
     with open("./Bytecode.json") as f:
         Bytecode = json.load(f)
     myContract = web3_endpoints[0].eth.contract(abi=ABI, bytecode=Bytecode['object'])
-
-    if mode == "deploy":
-        test_txn = deployContTx
-    else:
-        test_txn = sendEthTx
-    print(test_txn)
     json_key = key_client.get_key(key_name).key
     pubkey = util.convert_json_key_to_public_key_bytes(json_key)
     address_signer = util.public_key_to_address(pubkey[1:])
@@ -94,6 +88,11 @@ if __name__ == "__main__":
     })
     sendEthTx = {'value': 1, 'chainId': None, 'gas': 70000, 'gasPrice': 1000000000, 'nonce': web3_endpoints[0].eth.getTransactionCount(address_signer), 'to': mode}
     
+    if mode == "deploy":
+        test_txn = deployContTx
+    else:
+        test_txn = sendEthTx
+
     for i in range (test_txn['nonce'], test_txn['nonce']+repetitions):
         test_txn['nonce'] = i
         address_signer, signed_transaction = sign_keyvault(address_signer, signClient, config.VAULT_URL, key_name, key_version, test_txn)

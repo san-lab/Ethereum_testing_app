@@ -27,16 +27,16 @@ tmux selectp -t 0
 tmux splitw -v -p 50
 
 tmux selectp -t 0
-tmux send-keys "python3 akv_ethereum_signing.py 100 deploy santander https://rinkeby.infura.io/v3/f2a8581c640340758bead17199084148" C-m 
+tmux send-keys "python3 akv_ethereum_signing.py 100 deploy santander https://rinkeby.infura.io/v3/9ea72ad9a72d483bb72c005a65022b64" C-m 
 
 tmux selectp -t 1
-tmux send-keys "python3 akv_ethereum_signing.py 100 deploy bbva https://rinkeby.infura.io/v3/f2a8581c640340758bead17199084148" C-m 
+tmux send-keys "python3 akv_ethereum_signing.py 100 deploy bbva https://rinkeby.infura.io/v3/9ea72ad9a72d483bb72c005a65022b64" C-m 
 
 tmux selectp -t 2
-tmux send-keys "python3 akv_ethereum_signing.py 100 deploy bankia https://rinkeby.infura.io/v3/f2a8581c640340758bead17199084148" C-m 
+tmux send-keys "python3 akv_ethereum_signing.py 100 deploy bankia https://rinkeby.infura.io/v3/9ea72ad9a72d483bb72c005a65022b64" C-m 
 
 tmux selectp -t 3
-tmux send-keys "python3 akv_ethereum_signing.py 100 deploy test https://rinkeby.infura.io/v3/f2a8581c640340758bead17199084148" C-m 
+tmux send-keys "python3 akv_ethereum_signing.py 100 deploy test https://rinkeby.infura.io/v3/9ea72ad9a72d483bb72c005a65022b64" C-m 
 
 # Finished setup, attach to the tmux session!
 tmux attach-session -t $session
