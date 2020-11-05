@@ -45,10 +45,24 @@ def sign_keyvault(addressSigner, signingClient, vault_url, key_name, key_version
 if __name__ == "__main__":
     repetitions = int(sys.argv[1])
     mode = sys.argv[2]
+    signing_key = sys.argv[3]
     endpoints_addr = sys.argv[3:]
     os.environ['AZURE_CLIENT_ID'] = config.CLIENT_ID # visible in this process + all children
     os.environ['AZURE_CLIENT_SECRET'] = config.PASSWORD
     os.environ['AZURE_TENANT_ID'] = config.TENANT_ID
+
+    if signing_key == "santander":
+        key_name = config.KEY_NAME_SAN
+        key_version = config.KEY_VERSION_SAN
+    else if signing_key == "bbva":
+        key_name = config.KEY_NAME_BBVA
+        key_version = config.KEY_VERSION_BBVA
+    else if signing_key == "bankia";
+        key_name = config.KEY_NAME_BANKIA
+        key_version = config.KEY_VERSION_BANKIA
+    else
+        key_name = config.KEY_NAME_TEST
+        key_version = config.KEY_VERSION_TEST
 
     credential = DefaultAzureCredential()
 
@@ -62,26 +76,27 @@ if __name__ == "__main__":
     with open("./Bytecode.json") as f:
         Bytecode = json.load(f)
     myContract = web3_endpoints[0].eth.contract(abi=ABI, bytecode=Bytecode['object'])
-    deployContTx = myContract.constructor('0x145dc3442412EdC113b01b63e14e85BA99926830').buildTransaction({
-        'chainId': None,
-        'gas': 4600000,
-        'gasPrice': 1000000000,
-        'nonce': web3_endpoints[0].eth.getTransactionCount('0x71217b5145aad63387673A39a717e5d2aABD6c5B'),
-    })
-
-    sendEthTx = {'value': 1, 'chainId': None, 'gas': 70000, 'gasPrice': 1000000000, 'nonce': web3_endpoints[0].eth.getTransactionCount('0x71217b5145aad63387673A39a717e5d2aABD6c5B'), 'to': mode}
 
     if mode == "deploy":
         test_txn = deployContTx
     else:
         test_txn = sendEthTx
     print(test_txn)
-    json_key = key_client.get_key(config.KEY_NAME).key
+    json_key = key_client.get_key(key_name).key
     pubkey = util.convert_json_key_to_public_key_bytes(json_key)
     address_signer = util.public_key_to_address(pubkey[1:])
+    
+    deployContTx = myContract.constructor('0x145dc3442412EdC113b01b63e14e85BA99926830').buildTransaction({
+        'chainId': None,
+        'gas': 4600000,
+        'gasPrice': 1000000000,
+        'nonce': web3_endpoints[0].eth.getTransactionCount(address_signer),
+    })
+    sendEthTx = {'value': 1, 'chainId': None, 'gas': 70000, 'gasPrice': 1000000000, 'nonce': web3_endpoints[0].eth.getTransactionCount(address_signer), 'to': mode}
+    
     for i in range (test_txn['nonce'], test_txn['nonce']+repetitions):
         test_txn['nonce'] = i
-        address_signer, signed_transaction = sign_keyvault(address_signer, signClient, config.VAULT_URL, config.KEY_NAME, config.KEY_VERSION, test_txn)
+        address_signer, signed_transaction = sign_keyvault(address_signer, signClient, config.VAULT_URL, key_name, key_version, test_txn)
         rand_endpoint_pos = randint(0,len(endpoints_addr)-1)
         print("Position " + str(rand_endpoint_pos))
         tx_hash = web3_endpoints[rand_endpoint_pos].eth.sendRawTransaction(signed_transaction.hex())
