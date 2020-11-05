@@ -1,11 +1,11 @@
 ## Information about the testing environment.
 ### Accounts
-Acount1: "0x71217b5145aad63387673A39a717e5d2aABD6c5B"
-Key1 name on AKV: "santander"
-Acount2: "0xa38D7EE6Ea7Ba8503Bb9A51a15e959371eEedFa2"
-Key2 name on AKV: "bankia"
-Acount3: "0x8B7aa6dCefFCb2917Bc18609a8E1E650F038980A"
-Key3 name on AKV: "bbva"
+- Acount1: "0x71217b5145aad63387673A39a717e5d2aABD6c5B"
+- Key1 name on AKV: "santander"
+- Acount2: "0xa38D7EE6Ea7Ba8503Bb9A51a15e959371eEedFa2"
+- Key2 name on AKV: "bankia"
+- Acount3: "0x8B7aa6dCefFCb2917Bc18609a8E1E650F038980A"
+- Key3 name on AKV: "bbva"
 
 ### Endpoints
 - 52.157.68.69:8545
