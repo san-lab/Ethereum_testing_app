@@ -43,10 +43,15 @@ def sign_keyvault(addressSigner, signingClient, vault_url, key_name, key_version
 
 #Find how not to set on environment
 if __name__ == "__main__":
-    repetitions = int(sys.argv[1])
+    arg1 = sys.argv[1]
+    if arg1 == "help":
+        print("\n\nCommand used to send a burst of transactions to a blockchain network. The command has this form:\n\npython akv_ethereum_signing.py num mode account sig_mode [list_endpoints]\n - num: number of repetitions that will be executed\n - mode: it can either be \"deploy\" to deploy a contract or a blockchain address to send ether to that address\n - sig_mode: can be set to local or akv to either sign locally or go through the akv \n - account: It can be santander,bbva,bankia or test selects which of the address from the AKV will be used. If sig_mode was set to local this value will be ignored and always use local account\n - [list_endpoints]: any parameter after those will be interpreted as a endpoint, you can enter as many as you want and the programm will distribute the sending of the transactions randomly among them.\n")
+        sys.exit(0)
+    repetitions = int(arg1)
     mode = sys.argv[2]
     signing_key = sys.argv[3]
-    endpoints_addr = sys.argv[4:]
+    signing_mode = sys.argv[4]
+    endpoints_addr = sys.argv[5:]
     os.environ['AZURE_CLIENT_ID'] = config.CLIENT_ID # visible in this process + all children
     os.environ['AZURE_CLIENT_SECRET'] = config.PASSWORD
     os.environ['AZURE_TENANT_ID'] = config.TENANT_ID
@@ -78,7 +83,11 @@ if __name__ == "__main__":
     myContract = web3_endpoints[0].eth.contract(abi=ABI, bytecode=Bytecode['object'])
     json_key = key_client.get_key(key_name).key
     pubkey = util.convert_json_key_to_public_key_bytes(json_key)
-    address_signer = util.public_key_to_address(pubkey[1:])
+    
+    if  signing_mode == "local":
+        address_signer = config.LOCAL_KEY_ADDR
+    else:
+        address_signer = util.public_key_to_address(pubkey[1:])
     
     deployContTx = myContract.constructor('0x145dc3442412EdC113b01b63e14e85BA99926830').buildTransaction({
         'chainId': None,
@@ -89,16 +98,22 @@ if __name__ == "__main__":
     sendEthTx = {'value': 1, 'chainId': None, 'gas': 70000, 'gasPrice': 1000000000, 'nonce': web3_endpoints[0].eth.getTransactionCount(address_signer), 'to': mode}
     
     if mode == "deploy":
-        test_txn = deployContTx
+        built_tx = deployContTx
     else:
-        test_txn = sendEthTx
+        built_tx = sendEthTx
 
-    for i in range (test_txn['nonce'], test_txn['nonce']+repetitions):
-        test_txn['nonce'] = i
-        address_signer, signed_transaction = sign_keyvault(address_signer, signClient, config.VAULT_URL, key_name, key_version, test_txn)
+    for i in range (built_tx['nonce'], built_tx['nonce']+repetitions):
+        built_tx['nonce'] = i
         rand_endpoint_pos = randint(0,len(endpoints_addr)-1)
+        if signing_mode == "akv":
+            address_signer, signed_transaction = sign_keyvault(address_signer, signClient, config.VAULT_URL, key_name, key_version, built_tx)
+            rawTx = signed_transaction.hex()
+        else:
+            signed_transaction = web3_endpoints[rand_endpoint_pos].eth.account.signTransaction(built_tx, private_key=config.LOCAL_KEY_PRIV)
+            rawTx = signed_transaction.rawTransaction
+
         print("Position " + str(rand_endpoint_pos))
-        tx_hash = web3_endpoints[rand_endpoint_pos].eth.sendRawTransaction(signed_transaction.hex())
+        tx_hash = web3_endpoints[rand_endpoint_pos].eth.sendRawTransaction(rawTx)
         print("tx on etherscan: ", "https://rinkeby.etherscan.io/tx/" + tx_hash.hex())
 
     print("Sent whole " + str(repetitions) +  " transactions")
