@@ -52,6 +52,7 @@ if __name__ == "__main__":
     signing_mode = sys.argv[3]
     signing_key = sys.argv[4]
     endpoints_addr = sys.argv[5:]
+    print(str(repetitions) + " " + mode + " " + signing_mode + " " + signing_key + " " + endpoints_addr)
     os.environ['AZURE_CLIENT_ID'] = config.CLIENT_ID # visible in this process + all children
     os.environ['AZURE_CLIENT_SECRET'] = config.PASSWORD
     os.environ['AZURE_TENANT_ID'] = config.TENANT_ID
