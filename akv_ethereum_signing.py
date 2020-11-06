@@ -96,7 +96,7 @@ if __name__ == "__main__":
         'gasPrice': 1000000000,
         'nonce': web3_endpoints[0].eth.getTransactionCount(address_signer),
     })
-    sendEthTx = {'value': 1, 'chainId': None, 'gas': 70000, 'gasPrice': 1000000000, 'nonce': web3_endpoints[0].eth.getTransactionCount(address_signer), 'to': mode}
+    sendEthTx = {'value': 1000000000000000000, 'chainId': None, 'gas': 70000, 'gasPrice': 1000000000, 'nonce': web3_endpoints[0].eth.getTransactionCount(address_signer), 'to': mode}
     
     if mode == "deploy":
         built_tx = deployContTx
