@@ -37,7 +37,7 @@ def sign_keyvault(addressSigner, signingClient, vault_url, key_name, key_version
         v, r, s, valid = util.convert_azure_secp256k1_signature_to_vrs(pubkey, unsigned_tx_hash, sig_resp.result, chain_id)
 
     vrs = (v,r,s)
-    print("v, r, s: ", vrs)
+    #print("v, r, s: ", vrs)
     ret_signed_transaction = encode_transaction(unsigned_tx, vrs)
     return address_signer, ret_signed_transaction
 
