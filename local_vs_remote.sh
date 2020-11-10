@@ -1,7 +1,7 @@
 #!/bin/bash
 #tmux new-session -d -s my_session './python3 akv_ethereum_signing.py 100 deploy santander https://rinkeby.infura.io/v3/f2a8581c640340758bead17199084148'
 
-session="work"
+session="tests2"
 
 # set up tmux
 tmux start-server
