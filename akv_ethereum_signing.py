@@ -114,9 +114,8 @@ if __name__ == "__main__":
             signed_transaction = web3_endpoints[rand_endpoint_pos].eth.account.signTransaction(built_tx, private_key=config.LOCAL_KEY_PRIV)
             rawTx = signed_transaction.rawTransaction
 
-        print("Position " + str(rand_endpoint_pos))
         tx_hash = web3_endpoints[rand_endpoint_pos].eth.sendRawTransaction(rawTx)
-        print("tx on etherscan: ", "https://rinkeby.etherscan.io/tx/" + tx_hash.hex())
+        #print("tx on etherscan: ", "https://rinkeby.etherscan.io/tx/" + tx_hash.hex())
 
     print("Sent whole " + str(repetitions) +  " transactions")
     t1 = time.clock() - t0
