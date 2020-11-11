@@ -1,6 +1,7 @@
 CLIENT_ID = '07e9b304-3036-46bb-af24-1eac6124fb48'
 PASSWORD = '8afd82d40553ffa3902c87601333db4618dd8f2501840f8c1f363fb317877c1d'
 TENANT_ID = '35595a02-4d6d-44ac-99e1-f9ab4cd872db'
+CURVE = 'P-256K'
 
 VAULT_URL = 'https://sdis1weuakvblkpoccomm001.vault.azure.net/'
 KEY_NAME_TEST = 'hsm-key'
