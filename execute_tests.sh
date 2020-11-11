@@ -25,16 +25,16 @@ tmux selectp -t 0
 tmux splitw -v -p 50
 
 tmux selectp -t 0
-tmux send-keys "python3 akv_ethereum_signing.py 100 deploy akv santander http://52.157.68.69:8545" C-m 
+tmux send-keys "python3 akv_ethereum_signing.py deploy 100 akv santander http://52.157.68.69:8545" C-m 
 
 tmux selectp -t 1
-tmux send-keys "python3 akv_ethereum_signing.py 100 deploy akv bbva http://40.68.120.93:8545" C-m 
+tmux send-keys "python3 akv_ethereum_signing.py deploy 100 akv bbva http://40.68.120.93:8545" C-m 
 
 tmux selectp -t 2
-tmux send-keys "python3 akv_ethereum_signing.py 100 deploy akv bankia http://13.80.45.53:8545" C-m 
+tmux send-keys "python3 akv_ethereum_signing.py deploy 100 akv bankia http://13.80.45.53:8545" C-m 
 
 tmux selectp -t 3
-tmux send-keys "python3 akv_ethereum_signing.py 100 deploy akv test http://52.166.19.166:8545" C-m 
+tmux send-keys "python3 akv_ethereum_signing.py deploy 100 akv test http://52.166.19.166:8545" C-m 
 
 # Finished setup, attach to the tmux session!
 tmux attach-session -t $session

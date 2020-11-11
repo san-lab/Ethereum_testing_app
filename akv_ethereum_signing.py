@@ -62,7 +62,7 @@ if __name__ == "__main__":
 
     arg1 = sys.argv[1]
     if arg1 == "help":
-        print("\n\nCommand used to send a burst of transactions to a blockchain network. The command has this form:\n\npython akv_ethereum_signing.py num mode sig_mode account [list_endpoints]\n - num: number of repetitions that will be executed\n - mode: it can either be \"deploy\" to deploy a contract or a blockchain address to send ether to that address\n - sig_mode: can be set to local or akv to either sign locally or go through the akv \n - account: It can be santander,bbva,bankia or test selects which of the address from the AKV will be used. If sig_mode was set to local this value will be ignored and always use local account\n - [list_endpoints]: any parameter after those will be interpreted as a endpoint, you can enter as many as you want and the programm will distribute the sending of the transactions randomly among them.\n")
+        print("\n\nCommand used to send a burst of transactions to a blockchain network. The command has this form:\n\npython akv_ethereum_signing.py mode num sig_mode account [list_endpoints]\n - mode: it can either be \"deploy\" to deploy a contract or a blockchain address to send ether to that address\n - num: number of repetitions that will be executed\n - sig_mode: can be set to local or akv to either sign locally or go through the akv \n - account: It can be santander,bbva,bankia or test selects which of the address from the AKV will be used. If sig_mode was set to local this value will be ignored and always use local account\n - [list_endpoints]: any parameter after those will be interpreted as a endpoint, you can enter as many as you want and the programm will distribute the sending of the transactions randomly among them.\n")
         sys.exit(0)
     elif arg1 == "create":
         name = sys.argv[2]
@@ -70,8 +70,8 @@ if __name__ == "__main__":
         w3 = Web3(HTTPProvider(config.ETHEREUM_ENDPOINT))
         createKey(name)
         sys.exit(0)
-    repetitions = int(arg1)
-    mode = sys.argv[2]
+    repetitions = int(sys.argv[2])
+    mode = sys.argv[1]
     signing_mode = sys.argv[3]
     signing_key = sys.argv[4]
     endpoints_addr = sys.argv[5:]
