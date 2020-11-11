@@ -97,7 +97,7 @@ if __name__ == "__main__":
     with open("./Bytecode.json") as f:
         Bytecode = json.load(f)
     myContract = web3_endpoints[0].eth.contract(abi=ABI, bytecode=Bytecode['object'])
-    json_key = key_client.get_key(key_name).key
+    json_key = key_client.get_key(key_name, version=key_version).key
     pubkey = util.convert_json_key_to_public_key_bytes(json_key)
     
     if  signing_mode == "local":
