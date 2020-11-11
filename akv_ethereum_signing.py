@@ -67,6 +67,7 @@ if __name__ == "__main__":
     elif arg1 == "create":
         name = sys.argv[2]
         print(name)
+        w3 = Web3(HTTPProvider(config.ETHEREUM_ENDPOINT))
         createKey(name)
         sys.exit(0)
     repetitions = int(arg1)
