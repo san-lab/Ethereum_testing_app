@@ -53,6 +53,9 @@ def sign_keyvault(addressSigner, signingClient, vault_url, key_name, key_version
 if __name__ == "__main__":
     t0= time.clock()
 
+    os.environ['AZURE_CLIENT_ID'] = config.CLIENT_ID # visible in this process + all children
+    os.environ['AZURE_CLIENT_SECRET'] = config.PASSWORD
+    os.environ['AZURE_TENANT_ID'] = config.TENANT_ID
     credential = DefaultAzureCredential()
     key_client = KeyClient(vault_url=config.VAULT_URL, credential=credential)
     signClient = KeyVaultClient(KeyVaultAuthentication(auth_callback))
@@ -72,9 +75,6 @@ if __name__ == "__main__":
     signing_key = sys.argv[4]
     endpoints_addr = sys.argv[5:]
     print(str(repetitions) + " " + mode + " " + signing_mode + " " + signing_key + " " + str(endpoints_addr))
-    os.environ['AZURE_CLIENT_ID'] = config.CLIENT_ID # visible in this process + all children
-    os.environ['AZURE_CLIENT_SECRET'] = config.PASSWORD
-    os.environ['AZURE_TENANT_ID'] = config.TENANT_ID
 
     if signing_key == "santander":
         key_name = config.KEY_NAME_SAN
