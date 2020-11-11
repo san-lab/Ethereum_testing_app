@@ -6,6 +6,8 @@
 - Key2 name on AKV: "bankia"
 - Acount3: "0x8B7aa6dCefFCb2917Bc18609a8E1E650F038980A"
 - Key3 name on AKV: "bbva"
+- Acount3: "0x145dc3442412EdC113b01b63e14e85BA99926830"
+- Key4 name on AKV: "hsm-key"
 
 ### Endpoints
 - 52.157.68.69:8545  //  30352bed...14cc7e7f

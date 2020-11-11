@@ -75,7 +75,6 @@ if __name__ == "__main__":
     signing_mode = sys.argv[3]
     signing_key = sys.argv[4]
     endpoints_addr = sys.argv[5:]
-    print(str(repetitions) + " " + mode + " " + signing_mode + " " + signing_key + " " + str(endpoints_addr))
 
     if signing_key == "santander":
         key_name = config.KEY_NAME_SAN
