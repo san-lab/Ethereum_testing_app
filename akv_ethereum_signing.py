@@ -58,6 +58,7 @@ if __name__ == "__main__":
         sys.exit(0)
     if arg1 == "create"
         name = sys.argv[2]
+        print(name)
         createKey(name)
         sys.exit(0)
     repetitions = int(arg1)

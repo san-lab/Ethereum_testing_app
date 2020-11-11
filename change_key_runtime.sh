@@ -1,5 +1,5 @@
 #!/bin/bash
-session="tests2"
+session="tests3"
 
 # set up tmux
 tmux start-server
@@ -14,10 +14,10 @@ tmux selectp -t 1
 tmux splitw -h -p 50
 
 tmux selectp -t 0
-tmux send-keys "python3 akv_ethereum_signing.py 10000 deploy akv santander http://52.157.68.69:8545" C-m 
+tmux send-keys "python3 akv_ethereum_signing.py 10000 deploy akv test http://52.157.68.69:8545" C-m 
 
 tmux selectp -t 1
-tmux send-keys "python3 akv_ethereum_signing.py 10000 deploy local bbva http://40.68.120.93:8545" C-m 
+tmux send-keys "python3 akv_ethereum_signing.py create hsm-key" C-m 
 
 # Finished setup, attach to the tmux session!
 tmux attach-session -t $session
