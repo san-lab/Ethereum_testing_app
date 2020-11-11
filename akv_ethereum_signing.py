@@ -131,6 +131,7 @@ if __name__ == "__main__":
 
         tx_hash = web3_endpoints[rand_endpoint_pos].eth.sendRawTransaction(rawTx)
         #print("tx on etherscan: ", "https://rinkeby.etherscan.io/tx/" + tx_hash.hex())
+        print("Transaction hash: " + tx_hash.hex())
 
     print("Sent whole " + str(repetitions) +  " transactions")
     t1 = time.clock() - t0
