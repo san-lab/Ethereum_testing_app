@@ -1,5 +1,5 @@
 #!/bin/bash
-session="tests4"
+session="tests1"
 
 # set up tmux
 tmux start-server
@@ -21,33 +21,20 @@ tmux splitw -v -p 50
 # select pane 0, set to api root
 tmux selectp -t 0
 
-# Split pane 3 vertically by 50%
+# Split pane 0 vertically by 50%
 tmux splitw -v -p 50
 
-# select pane 0, set to api root
 tmux selectp -t 0
+tmux send-keys "python3 akv_ethereum_signing.py deploy 100 akv santander http://52.157.68.69:8545" C-m 
 
-# Split pane 3 vertically by 50%
-tmux splitw -v -p 50
+tmux selectp -t 1
+tmux send-keys "python3 akv_ethereum_signing.py deploy 100 akv bbva http://40.68.120.93:8545" C-m 
 
-# select pane 0, set to api root
 tmux selectp -t 2
+tmux send-keys "python3 akv_ethereum_signing.py deploy 100 akv bankia http://13.80.45.53:8545" C-m 
 
-# Split pane 3 vertically by 50%
-tmux splitw -v -p 50
-
-# select pane 0, set to api root
-tmux selectp -t 4
-
-# Split pane 3 vertically by 50%
-tmux splitw -v -p 50
-
-# select pane 0, set to api root
-tmux selectp -t 6
-
-# Split pane 3 vertically by 50%
-tmux splitw -v -p 50
+tmux selectp -t 3
+tmux send-keys "python3 akv_ethereum_signing.py deploy 100 akv test http://52.166.19.166:8545" C-m 
 
 # Finished setup, attach to the tmux session!
 tmux attach-session -t $session
-

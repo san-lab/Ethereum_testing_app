@@ -101,7 +101,18 @@ if __name__ == "__main__":
     pubkey = util.convert_json_key_to_public_key_bytes(json_key)
     
     if  signing_mode == "local":
-        address_signer = config.LOCAL_KEY_ADDR
+        if signing_key == "local1":
+            address_signer = config.LOCAL1_KEY_ADDR
+            priv_key = config.LOCAL1_KEY_PRIV
+        elif signing_key == "local2":
+            address_signer = config.LOCAL2_KEY_ADDR
+            priv_key = config.LOCAL2_KEY_PRIV
+        elif signing_key == "local3":
+            address_signer = config.LOCAL3_KEY_ADDR
+            priv_key = config.LOCAL3_KEY_PRIV
+        else:
+            address_signer = config.LOCAL4_KEY_ADDR
+            priv_key = config.LOCAL4_KEY_PRIV
     else:
         address_signer = util.public_key_to_address(pubkey[1:])
     
@@ -125,7 +136,7 @@ if __name__ == "__main__":
             address_signer, signed_transaction = sign_keyvault(address_signer, signClient, config.VAULT_URL, key_name, key_version, built_tx)
             rawTx = signed_transaction.hex()
         else:
-            signed_transaction = web3_endpoints[rand_endpoint_pos].eth.account.signTransaction(built_tx, private_key=config.LOCAL_KEY_PRIV)
+            signed_transaction = web3_endpoints[rand_endpoint_pos].eth.account.signTransaction(built_tx, private_key=priv_key)
             rawTx = signed_transaction.rawTransaction
 
         tx_hash = web3_endpoints[rand_endpoint_pos].eth.sendRawTransaction(rawTx)

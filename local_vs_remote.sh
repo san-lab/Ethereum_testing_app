@@ -17,7 +17,7 @@ tmux selectp -t 0
 tmux send-keys "python3 akv_ethereum_signing.py deploy 10000 akv santander http://52.157.68.69:8545" C-m 
 
 tmux selectp -t 1
-tmux send-keys "python3 akv_ethereum_signing.py deploy 10000 local bbva http://40.68.120.93:8545" C-m 
+tmux send-keys "python3 akv_ethereum_signing.py deploy 10000 local local1 http://40.68.120.93:8545" C-m 
 
 # Finished setup, attach to the tmux session!
 tmux attach-session -t $session
