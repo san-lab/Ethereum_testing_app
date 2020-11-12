@@ -100,6 +100,7 @@ if __name__ == "__main__":
     json_key = key_client.get_key(key_name, version=key_version).key
     pubkey = util.convert_json_key_to_public_key_bytes(json_key)
     
+    print(signing_mode + " " + signing_key)
     if  signing_mode == "local":
         if signing_key == "local1":
             address_signer = config.LOCAL1_KEY_ADDR
