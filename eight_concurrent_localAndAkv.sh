@@ -61,16 +61,16 @@ tmux selectp -t 3
 tmux send-keys "python3 akv_ethereum_signing.py deploy 100 akv test http://52.166.19.166:8545" C-m 
 
 tmux selectp -t 4
-tmux send-keys "python3 akv_ethereum_signing.py deploy 10000 local local1 http://40.68.120.93:8545" C-m 
+tmux send-keys "python3 akv_ethereum_signing.py deploy 100 local local1 http://51.124.166.42:8545" C-m 
 
 tmux selectp -t 5
-tmux send-keys "python3 akv_ethereum_signing.py deploy 10000 local local1 http://40.68.120.93:8545" C-m 
+tmux send-keys "python3 akv_ethereum_signing.py deploy 100 local local2 http://13.95.104.31:8545" C-m 
 
 tmux selectp -t 6
-tmux send-keys "python3 akv_ethereum_signing.py deploy 10000 local local1 http://40.68.120.93:8545" C-m 
+tmux send-keys "python3 akv_ethereum_signing.py deploy 100 local local3 http://52.232.16.182:8545" C-m 
 
 tmux selectp -t 7
-tmux send-keys "python3 akv_ethereum_signing.py deploy 10000 local local1 http://40.68.120.93:8545" C-m 
+tmux send-keys "python3 akv_ethereum_signing.py deploy 100 local local4 http://52.232.16.182:8545" C-m 
 
 
 # Finished setup, attach to the tmux session!
