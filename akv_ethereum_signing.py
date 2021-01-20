@@ -18,6 +18,8 @@ import secp256k1
 from eth_account.internal.transactions import encode_transaction, serializable_unsigned_transaction_from_dict
 from eth_keys import KeyAPI
 
+import sdkms
+
 def createKey(name):
     ec_key = key_client.create_ec_key(name, curve=config.CURVE)
     packedKey = ec_key.key.x.hex() + ec_key.key.y.hex()
@@ -49,6 +51,43 @@ def sign_keyvault(addressSigner, signingClient, vault_url, key_name, key_version
     ret_signed_transaction = encode_transaction(unsigned_tx, vrs)
     return address_signer, ret_signed_transaction
 
+def login_fortanix():
+    config = sdkms.v1.Configuration()
+    config.host = config.SDKMS_API_ENDPOINT
+    config.app_api_key = config.SDKMS_API_KEY
+    client = sdkms.v1.ApiClient(configuration=config)
+    auth_instance = sdkms.v1.AuthenticationApi(api_client=client)
+    try:
+        auth = auth_instance.authorize()
+        config.api_key['Authorization'] = auth.access_token
+        config.api_key_prefix['Authorization'] = 'Bearer'
+        return client
+    except Exception as e:
+        print("Exception when calling AuthenticationApi->authorize: %s\n" % e)
+        return None
+
+def sign_fortanix(client, tx, chain_id=0):
+    unsigned_tx = serializable_unsigned_transaction_from_dict(tx)
+    unsigned_tx_hash = unsigned_tx.hash()
+
+    api_ins = v1.SecurityObjectsApi(api_client=client)
+    keys = api_ins.get_security_objects(name=config.SDKMS_KEY_NAME)
+    key_kid = keys[0].kid
+    pubK = keys[0].pub_key.hex()
+
+    api_instance = sdkms.v1.SignAndVerifyApi(api_client=client)
+    request = sdkms.v1.SignRequest(hash_alg=v1.DigestAlgorithm.SHA256 ,hash=unsigned_tx_hash)
+    try:
+        signature = api_instance.sign(key_kid, request).signature
+        v, r, s, valid = util.convert_azure_secp256k1_signature_to_vrs(pubK, unsigned_tx_hash, signature, chain_id)
+        vrs = (v,r,s)
+        ret_signed_transaction = encode_transaction(unsigned_tx, vrs)
+        return address_signer, ret_signed_transaction
+
+    except Exception as e:
+        print("Exception when calling SignAndVerifyApi->sign: %s\n" % e)
+        return None
+
 #Find how not to set on environment
 if __name__ == "__main__":
     t0= time.clock()
@@ -59,6 +98,7 @@ if __name__ == "__main__":
     credential = DefaultAzureCredential()
     key_client = KeyClient(vault_url=config.VAULT_URL, credential=credential)
     signClient = KeyVaultClient(KeyVaultAuthentication(auth_callback))
+    fortanixClient = login_fortanix()
 
     arg1 = sys.argv[1]
     if arg1 == "help":
@@ -97,8 +137,6 @@ if __name__ == "__main__":
     with open("./Bytecode.json") as f:
         Bytecode = json.load(f)
     myContract = web3_endpoints[0].eth.contract(abi=ABI, bytecode=Bytecode['object'])
-    json_key = key_client.get_key(key_name, version=key_version).key
-    pubkey = util.convert_json_key_to_public_key_bytes(json_key)
     
     if  signing_mode == "local":
         if signing_key == "local1":
@@ -113,7 +151,18 @@ if __name__ == "__main__":
         else:
             address_signer = config.LOCAL4_KEY_ADDR
             priv_key = config.LOCAL4_KEY_PRIV
-    else:
+
+    elif signing_mode == "fortanix":
+        api_ins = v1.SecurityObjectsApi(api_client=fortanixClient)
+        keys = api_ins.get_security_objects(name=config.SDKMS_KEY_NAME)
+        key_pubK = keys[0].pub_key.hex()
+        print("KEY_PUBK")
+        print(key_pubK)
+        address_signer = util.public_key_to_address(key_pubK[1:])
+
+    else :
+        json_key = key_client.get_key(key_name, version=key_version).key
+        pubkey = util.convert_json_key_to_public_key_bytes(json_key)
         address_signer = util.public_key_to_address(pubkey[1:])
     
     deployContTx = myContract.constructor('0x145dc3442412EdC113b01b63e14e85BA99926830').buildTransaction({
@@ -137,12 +186,15 @@ if __name__ == "__main__":
         if signing_mode == "akv":
             address_signer, signed_transaction = sign_keyvault(address_signer, signClient, config.VAULT_URL, key_name, key_version, built_tx)
             rawTx = signed_transaction.hex()
+        elif signing_mode == "fortanix":
+            address_signer, signed_transaction = sign_fortanix(fortanixClient, built_tx)
+            rawTx = signed_transaction.hex()
         else:
             signed_transaction = web3_endpoints[rand_endpoint_pos].eth.account.signTransaction(built_tx, private_key=priv_key)
             rawTx = signed_transaction.rawTransaction
 
         tx_hash = web3_endpoints[rand_endpoint_pos].eth.sendRawTransaction(rawTx)
-        #print("tx on etherscan: ", "https://rinkeby.etherscan.io/tx/" + tx_hash.hex())
+        print("tx on etherscan: ", "https://rinkeby.etherscan.io/tx/" + tx_hash.hex())
         print("Transaction hash: " + tx_hash.hex())
 
     print("Sent whole " + str(repetitions) +  " transactions")
