@@ -161,9 +161,6 @@ if __name__ == "__main__":
         api_ins = v1.SecurityObjectsApi(api_client=fortanixClient)
         keys = api_ins.get_security_objects(name=config.SDKMS_KEY_NAME)
         key_pubK = keys[0].pub_key.hex()[46:]
-        print("KEY_PUBK")
-        print(key_pubK)
-        print(keys[0])
         pubK_bytearray = bytearray.fromhex(key_pubK)
         address_signer = util.public_key_to_address(pubK_bytearray[1:])
 
