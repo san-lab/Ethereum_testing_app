@@ -73,7 +73,7 @@ def sign_fortanix(client, tx, chain_id=0):
     api_ins = v1.SecurityObjectsApi(api_client=client)
     keys = api_ins.get_security_objects(name=config.SDKMS_KEY_NAME)
     key_kid = keys[0].kid
-    pubK_bytes = bytes(keys[0].pub_key[46:])
+    pubK_bytes = bytes.fromhex(keys[0].pub_key[46:])
     pubK = pubK_bytes.hex()
 
     api_instance = v1.SignAndVerifyApi(api_client=client)
