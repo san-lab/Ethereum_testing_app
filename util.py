@@ -61,7 +61,7 @@ def convert_azure_secp256k1_signature_to_vrs(pub_key_bytes, msg_hash_bytes, sig_
         recsig = unrelated.ecdsa_recoverable_deserialize(sig_bytes, i)
         print("aaaaa")
         print(len(msg_hash_bytes))
-        msg_hash_cdata = ffi.new("unsigned char *", int(bytes(msg_hash_bytes).hex(),16))
+        msg_hash_cdata = ffi.new("unsigned char[32]", int(bytes(msg_hash_bytes).hex(),16))
         print("aaaaa")
         pubkey_recovered = unrelated.ecdsa_recover(msg_hash_cdata, recsig, raw=True)#<---- parece ser msg_hash_bytes
         print("5555")
