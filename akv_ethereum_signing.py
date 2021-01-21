@@ -75,8 +75,8 @@ def sign_fortanix(client, tx, chain_id=0):
     key_kid = keys[0].kid
     pubK = keys[0].pub_key.hex()
 
-    api_instance = sdkms.v1.SignAndVerifyApi(api_client=client)
-    request = sdkms.v1.SignRequest(hash_alg=v1.DigestAlgorithm.SHA256 ,hash=unsigned_tx_hash)
+    api_instance = v1.SignAndVerifyApi(api_client=client)
+    request = v1.SignRequest(hash_alg=v1.DigestAlgorithm.SHA256 ,hash=unsigned_tx_hash)
     try:
         signature = api_instance.sign(key_kid, request).signature
         v, r, s, valid = util.convert_azure_secp256k1_signature_to_vrs(pubK, unsigned_tx_hash, signature, chain_id)
