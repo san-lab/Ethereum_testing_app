@@ -191,6 +191,8 @@ if __name__ == "__main__":
             #rawTx = signed_transaction.hex()
             print("b")
         elif signing_mode == "fortanix":
+            print(type(fortanixClient))
+            print(type(built_tx))
             address_signer, signed_transaction = sign_fortanix(fortanixClient, built_tx)
             rawTx = signed_transaction.hex()
         else:
