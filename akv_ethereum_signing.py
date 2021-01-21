@@ -80,13 +80,9 @@ def sign_fortanix(client, tx, chain_id=0):
     request = v1.SignRequest(hash_alg=v1.DigestAlgorithm.SHA256 ,hash=unsigned_tx_hash)
     try:
         signature = api_instance.sign(key_kid, request).signature
-        print("A")
         v, r, s, valid = util.convert_azure_secp256k1_signature_to_vrs(pubK_bytes, unsigned_tx_hash, signature, chain_id)
-        print("B")
         vrs = (v,r,s)
-        print("C")
         ret_signed_transaction = encode_transaction(unsigned_tx, vrs)
-        print("D")
         return address_signer, ret_signed_transaction
 
     except Exception as e:
@@ -197,6 +193,7 @@ if __name__ == "__main__":
             print("b")
         elif signing_mode == "fortanix":
             address_signer, signed_transaction = sign_fortanix(fortanixClient, built_tx)
+            print(signed_transaction)
             rawTx = signed_transaction.hex()
         else:
             signed_transaction = web3_endpoints[rand_endpoint_pos].eth.account.signTransaction(built_tx, private_key=priv_key)
