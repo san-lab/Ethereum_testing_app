@@ -52,15 +52,15 @@ def auth_callback(server, resource, scope):
 #    return address_signer, ret_signed_transaction
 
 def login_fortanix():
-    config = v1.Configuration()
-    config.host = config.SDKMS_API_ENDPOINT
-    config.app_api_key = config.SDKMS_API_KEY
-    client = v1.ApiClient(configuration=config)
+    configuration = v1.Configuration()
+    configuration.host = config.SDKMS_API_ENDPOINT
+    configuration.app_api_key = config.SDKMS_API_KEY
+    client = v1.ApiClient(configuration=configuration)
     auth_instance = v1.AuthenticationApi(api_client=client)
     try:
         auth = auth_instance.authorize()
-        config.api_key['Authorization'] = auth.access_token
-        config.api_key_prefix['Authorization'] = 'Bearer'
+        configuration.api_key['Authorization'] = auth.access_token
+        configuration.api_key_prefix['Authorization'] = 'Bearer'
         return client
     except Exception as e:
         print("Exception when calling AuthenticationApi->authorize: %s\n" % e)
