@@ -81,7 +81,7 @@ def sign_fortanix(client, tx, chain_id=0):
     try:
         signature = api_instance.sign(key_kid, request).signature
         print("A")
-        v, r, s, valid = util.convert_azure_secp256k1_signature_to_vrs(pubK, unsigned_tx_hash, signature, chain_id)
+        v, r, s, valid = util.convert_azure_secp256k1_signature_to_vrs(pubK_bytes, unsigned_tx_hash, signature, chain_id)
         print("B")
         vrs = (v,r,s)
         print("C")
