@@ -1,6 +1,7 @@
 import secp256k1
 from eth_keys import KeyAPI
 import config
+import ffi
 
 def convert_json_key_to_public_key_bytes(json_key):
     pubkey = bytearray()
