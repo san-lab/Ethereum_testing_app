@@ -69,7 +69,7 @@ def login_fortanix():
 def sign_fortanix(client, tx, chain_id=0):
     unsigned_tx = serializable_unsigned_transaction_from_dict(tx)
     unsigned_tx_hash = unsigned_tx.hash()
-    print(type(unsigned_tx_hash))
+    print(type(bytearray(unsigned_tx_hash)))
 
     api_ins = v1.SecurityObjectsApi(api_client=client)
     keys = api_ins.get_security_objects(name=config.SDKMS_KEY_NAME)
