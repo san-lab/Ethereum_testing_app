@@ -55,7 +55,9 @@ def convert_azure_secp256k1_signature_to_vrs(pub_key_bytes, msg_hash_bytes, sig_
     v = -1
     unrelated = MyECDSA()
     for i in range(0, 2):
+        print("aaaaa")
         recsig = unrelated.ecdsa_recoverable_deserialize(sig_bytes, i)
+        print("aaaaa")
         pubkey_recovered = unrelated.ecdsa_recover(msg_hash_bytes, recsig, raw=True)
         print("5555")
         pubser = secp256k1.PublicKey(pubkey_recovered).serialize(compressed=False)
