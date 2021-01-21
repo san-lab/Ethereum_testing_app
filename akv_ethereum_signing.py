@@ -155,7 +155,7 @@ if __name__ == "__main__":
     elif signing_mode == "fortanix":
         api_ins = v1.SecurityObjectsApi(api_client=fortanixClient)
         keys = api_ins.get_security_objects(name=config.SDKMS_KEY_NAME)
-        key_pubK = keys[0].pub_key.hex()
+        key_pubK = keys[0].pub_key.hex()[48:]
         print("KEY_PUBK")
         print(key_pubK)
         print(keys[0])
