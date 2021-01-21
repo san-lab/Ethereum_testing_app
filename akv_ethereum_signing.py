@@ -158,7 +158,8 @@ if __name__ == "__main__":
         key_pubK = keys[0].pub_key.hex()
         print("KEY_PUBK")
         print(key_pubK)
-        address_signer = util.public_key_to_address(key_pubK[1:])
+        pubK_bytearray = bytearray.fromhex(key_pubK)
+        address_signer = util.public_key_to_address(pubK_bytearray[1:])
 
     else :
         #json_key = key_client.get_key(key_name, version=key_version).key
