@@ -158,6 +158,7 @@ if __name__ == "__main__":
         key_pubK = keys[0].pub_key.hex()
         print("KEY_PUBK")
         print(key_pubK)
+        print(keys[0])
         pubK_bytearray = bytearray.fromhex(key_pubK)
         address_signer = util.public_key_to_address(pubK_bytearray[1:])
 
