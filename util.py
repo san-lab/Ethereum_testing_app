@@ -45,9 +45,12 @@ def convert_azure_secp256k1_signature_to_vrs(pub_key_bytes, msg_hash_bytes, sig_
     print("1111")
     # Check the signature is still valid
     ecdsa_pubkey = secp256k1.PublicKey(pubkey=pub_key_bytes, raw=True)
+    print("1111")
     if len(sig_bytes)<64:
         return 0,0,0, False
+        print("XXXXX")
     sig_ser = ecdsa_pubkey.ecdsa_deserialize_compact(sig_bytes)
+    print("1111")
     verified_ecdsa = ecdsa_pubkey.ecdsa_verify(msg_hash_bytes, sig_ser, raw=True)
     print("2222")
     v = -1
