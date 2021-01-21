@@ -68,6 +68,7 @@ def convert_azure_secp256k1_signature_to_vrs(pub_key_bytes, msg_hash_bytes, sig_
             v = i
             break
     print("3333")
+    print(v)
 
     assert v == 0 or v == 1
 
