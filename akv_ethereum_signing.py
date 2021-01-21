@@ -86,7 +86,7 @@ def sign_fortanix(client, tx, chain_id=0):
 
     except Exception as e:
         print("Exception when calling SignAndVerifyApi->sign: %s\n" % e)
-        return None
+        return None, None
 
 #Find how not to set on environment
 if __name__ == "__main__":
@@ -191,8 +191,6 @@ if __name__ == "__main__":
             #rawTx = signed_transaction.hex()
             print("b")
         elif signing_mode == "fortanix":
-            print(type(fortanixClient))
-            print(type(built_tx))
             address_signer, signed_transaction = sign_fortanix(fortanixClient, built_tx)
             rawTx = signed_transaction.hex()
         else:
