@@ -64,6 +64,8 @@ def convert_azure_secp256k1_signature_to_vrs(pub_key_bytes, msg_hash_bytes, sig_
         pubkey_recovered = unrelated.ecdsa_recover(msg_hash_cdata, recsig, raw=True)#<---- parece ser msg_hash_bytes
         print("5555")
         pubser = secp256k1.PublicKey(pubkey_recovered).serialize(compressed=False)
+        print(pubser)
+        print(pub_key_bytes)
         if pubser == pub_key_bytes:
             v = i
             break
