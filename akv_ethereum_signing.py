@@ -1,5 +1,5 @@
-from azure.identity import DefaultAzureCredential
-from azure.keyvault.keys import KeyClient
+#from azure.identity import DefaultAzureCredential
+#from azure.keyvault.keys import KeyClient
 import os
 import config
 import util
@@ -10,8 +10,8 @@ from random import seed
 from random import randint
 from datetime import datetime
 
-from azure.keyvault import KeyVaultClient, KeyVaultAuthentication
-from azure.common.credentials import ServicePrincipalCredentials
+#from azure.keyvault import KeyVaultClient, KeyVaultAuthentication
+#from azure.common.credentials import ServicePrincipalCredentials
 from web3 import Web3, HTTPProvider
 from ethtoken.abi import EIP20_ABI
 import secp256k1
@@ -39,17 +39,17 @@ def auth_callback(server, resource, scope):
     token = credentials.token
     return token['token_type'], token['access_token']
 
-def sign_keyvault(addressSigner, signingClient, vault_url, key_name, key_version, tx, chain_id=0):
-    unsigned_tx = serializable_unsigned_transaction_from_dict(tx)
-    unsigned_tx_hash = unsigned_tx.hash()
-    valid = False
-    while not valid:
-        sig_resp = signingClient.sign(vault_url, key_name, key_version, 'ES256K', unsigned_tx_hash)
-        v, r, s, valid = util.convert_azure_secp256k1_signature_to_vrs(pubkey, unsigned_tx_hash, sig_resp.result, chain_id)
-
-    vrs = (v,r,s)
-    ret_signed_transaction = encode_transaction(unsigned_tx, vrs)
-    return address_signer, ret_signed_transaction
+#def sign_keyvault(addressSigner, signingClient, vault_url, key_name, key_version, tx, chain_id=0):
+#    unsigned_tx = serializable_unsigned_transaction_from_dict(tx)
+#    unsigned_tx_hash = unsigned_tx.hash()
+#    valid = False
+#    while not valid:
+#        sig_resp = signingClient.sign(vault_url, key_name, key_version, 'ES256K', unsigned_tx_hash)
+#        v, r, s, valid = util.convert_azure_secp256k1_signature_to_vrs(pubkey, unsigned_tx_hash, sig_resp.result, chain_id)
+#
+#    vrs = (v,r,s)
+#    ret_signed_transaction = encode_transaction(unsigned_tx, vrs)
+#    return address_signer, ret_signed_transaction
 
 def login_fortanix():
     config = sdkms.v1.Configuration()
@@ -92,12 +92,12 @@ def sign_fortanix(client, tx, chain_id=0):
 if __name__ == "__main__":
     t0= time.clock()
 
-    os.environ['AZURE_CLIENT_ID'] = config.CLIENT_ID # visible in this process + all children
-    os.environ['AZURE_CLIENT_SECRET'] = config.PASSWORD
-    os.environ['AZURE_TENANT_ID'] = config.TENANT_ID
-    credential = DefaultAzureCredential()
-    key_client = KeyClient(vault_url=config.VAULT_URL, credential=credential)
-    signClient = KeyVaultClient(KeyVaultAuthentication(auth_callback))
+    #os.environ['AZURE_CLIENT_ID'] = config.CLIENT_ID # visible in this process + all children
+    #os.environ['AZURE_CLIENT_SECRET'] = config.PASSWORD
+    #os.environ['AZURE_TENANT_ID'] = config.TENANT_ID
+    #credential = DefaultAzureCredential()
+    #key_client = KeyClient(vault_url=config.VAULT_URL, credential=credential)
+    #signClient = KeyVaultClient(KeyVaultAuthentication(auth_callback))
     fortanixClient = login_fortanix()
 
     arg1 = sys.argv[1]
@@ -161,9 +161,10 @@ if __name__ == "__main__":
         address_signer = util.public_key_to_address(key_pubK[1:])
 
     else :
-        json_key = key_client.get_key(key_name, version=key_version).key
-        pubkey = util.convert_json_key_to_public_key_bytes(json_key)
-        address_signer = util.public_key_to_address(pubkey[1:])
+        #json_key = key_client.get_key(key_name, version=key_version).key
+        #pubkey = util.convert_json_key_to_public_key_bytes(json_key)
+        #address_signer = util.public_key_to_address(pubkey[1:])
+        print("a")
     
     deployContTx = myContract.constructor('0x145dc3442412EdC113b01b63e14e85BA99926830').buildTransaction({
         'chainId': None,
@@ -184,8 +185,9 @@ if __name__ == "__main__":
         built_tx['nonce'] = i
         rand_endpoint_pos = randint(0,len(endpoints_addr)-1)
         if signing_mode == "akv":
-            address_signer, signed_transaction = sign_keyvault(address_signer, signClient, config.VAULT_URL, key_name, key_version, built_tx)
-            rawTx = signed_transaction.hex()
+            #address_signer, signed_transaction = sign_keyvault(address_signer, signClient, config.VAULT_URL, key_name, key_version, built_tx)
+            #rawTx = signed_transaction.hex()
+            print("b")
         elif signing_mode == "fortanix":
             address_signer, signed_transaction = sign_fortanix(fortanixClient, built_tx)
             rawTx = signed_transaction.hex()
