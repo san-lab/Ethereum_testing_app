@@ -42,27 +42,31 @@ def make_canonical(sig_bytes):
 
 def convert_azure_secp256k1_signature_to_vrs(pub_key_bytes, msg_hash_bytes, sig_bytes, chain_id=0):
     sig_bytes = bytes(make_canonical(sig_bytes))
-
+    print("1111")
     # Check the signature is still valid
     ecdsa_pubkey = secp256k1.PublicKey(pubkey=pub_key_bytes, raw=True)
     if len(sig_bytes)<64:
         return 0,0,0, False
     sig_ser = ecdsa_pubkey.ecdsa_deserialize_compact(sig_bytes)
     verified_ecdsa = ecdsa_pubkey.ecdsa_verify(msg_hash_bytes, sig_ser, raw=True)
-
+    print("2222")
     v = -1
     unrelated = MyECDSA()
     for i in range(0, 2):
         recsig = unrelated.ecdsa_recoverable_deserialize(sig_bytes, i)
         pubkey_recovered = unrelated.ecdsa_recover(msg_hash_bytes, recsig, raw=True)
+        print("5555")
         pubser = secp256k1.PublicKey(pubkey_recovered).serialize(compressed=False)
         if pubser == pub_key_bytes:
             v = i
             break
+    print("3333")
 
     assert v == 0 or v == 1
 
     v += 27
+
+    print("4444")
 
     if chain_id > 0:
         v += chain_id * 2 + 8
