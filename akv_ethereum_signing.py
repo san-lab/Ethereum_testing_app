@@ -18,7 +18,7 @@ import secp256k1
 from eth_account.internal.transactions import encode_transaction, serializable_unsigned_transaction_from_dict
 from eth_keys import KeyAPI
 
-import sdkms
+from sdkms import v1
 
 def createKey(name):
     ec_key = key_client.create_ec_key(name, curve=config.CURVE)
@@ -52,11 +52,11 @@ def auth_callback(server, resource, scope):
 #    return address_signer, ret_signed_transaction
 
 def login_fortanix():
-    config = sdkms.v1.Configuration()
+    config = v1.Configuration()
     config.host = config.SDKMS_API_ENDPOINT
     config.app_api_key = config.SDKMS_API_KEY
-    client = sdkms.v1.ApiClient(configuration=config)
-    auth_instance = sdkms.v1.AuthenticationApi(api_client=client)
+    client = v1.ApiClient(configuration=config)
+    auth_instance = v1.AuthenticationApi(api_client=client)
     try:
         auth = auth_instance.authorize()
         config.api_key['Authorization'] = auth.access_token
