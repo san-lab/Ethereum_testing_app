@@ -39,6 +39,7 @@ def auth_callback(server, resource, scope):
     token = credentials.token
     return token['token_type'], token['access_token']
 
+#
 #def sign_keyvault(addressSigner, signingClient, vault_url, key_name, key_version, tx, chain_id=0):
 #    unsigned_tx = serializable_unsigned_transaction_from_dict(tx)
 #    unsigned_tx_hash = unsigned_tx.hash()
