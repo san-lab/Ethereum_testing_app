@@ -28,12 +28,12 @@ def auth_callback(server, resource, scope):
 def sign_keyvault(signingClient, vault_url, key_name, key_version, tx, chain_id=0):
     unsigned_tx = serializable_unsigned_transaction_from_dict(tx)
     unsigned_tx_hash = unsigned_tx.hash()
-    sig_resp = signingClient.sign(vault_url, key_name, key_version, 'ES512', unsigned_tx_hash)
+    sig_resp = signingClient.sign(vault_url, key_name, key_version, 'ES256K', unsigned_tx_hash)
     return
 
 def signature_task(repetitions, key_name, key_version, unsigned_tx_hash, signingClient, vault_url):
     for i in range (0, repetitions):
-        signingClient.sign(vault_url, key_name, key_version, 'ES512', unsigned_tx_hash)
+        signingClient.sign(vault_url, key_name, key_version, 'ES256K', unsigned_tx_hash)
 
 def get_task(repetitions, key_name, key_version, key_client):
     for i in range (0, repetitions):
