@@ -61,8 +61,8 @@ if __name__ == "__main__":
         threads = int(sys.argv[4])
     key_name = ["" for i in range(4)]
     key_version = ["" for i in range(4)]
-    key_name[0] = '521-test'
-    key_version[0] = '9c808d4636ca4acb975a412931b044c8'
+    key_name[0] = config.KEY_NAME_TEST
+    key_version[0] = config.KEY_VERSION_TEST
     key_name[1] = config.KEY_NAME_SAN
     key_version[1] = config.KEY_VERSION_SAN
     key_name[2] = config.KEY_NAME_BANKIA
@@ -74,10 +74,6 @@ if __name__ == "__main__":
     built_tx = sendEthTx
     unsigned_tx = serializable_unsigned_transaction_from_dict(built_tx)
     unsigned_tx_hash = unsigned_tx.hash()
-    print("unsigned_tx_hash")
-    print(unsigned_tx_hash)
-    unsigned_tx_hash += bytes(32)
-    print(unsigned_tx_hash)
     if mode == "multi":
         list_threads = []
         thread_repetitions = repetitions//threads
