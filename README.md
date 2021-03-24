@@ -15,107 +15,13 @@
 - Local 3:"0x5DF55Ed20FbF6bd788F86d780878b1c4B22E8d7e"
 - Local 4:"0x49453eb8866225b92a38367b85de002f1d9244d1"
 
-### Endpoints
-- 52.157.68.69:8545  //  30352bed...14cc7e7f
-- 40.68.120.93:8545  //  31134712...1be131dc
-- 13.80.45.53:8545  // 104e566b...153accbd
-- 52.166.19.166:8545  //  47fdb222...b2f649fe
-- 51.124.166.42:8545  //  38d4468c...3ff5a17d	
-- 13.95.104.31:8545  //  4c74f76e...2f0b8d20
-- 52.232.16.182:8545  //  2f2b921f...9b408aa5
-
-
-## How to prepare an AKV instance for the demo.
-### Bring up an instance of Azure key vault
-First you need to create an Azure Key Vault on your resource group, it doesn't need to have any special featurejust follow the steps on the wizard to have it ready.
-
-### Create a service principal(in case is not created)
-Here at Santander if you ask for a resource group with an Azure Key Vault inside  you should already have a default service principal created already for that resource group.
-
-If that is not the case you need to create a new one with the following command from the azure CLI.
+## Usage of the aplication
+The file that needs to be executed is akv_ethereum_signing.py. These would be an example of execution of the application.
 ```
-az ad sp create-for-rbac --name http://my-application --skip-assignment
+python3 akv_ethereum_signing.py <num_executions> <task> <mode> (<num_threads>)
 ```
-That command should return the following json:
-```
-{
-    "appId": "generated app id",
-    "displayName": "my-application",
-    "name": "http://my-application",
-    "password": "random password",
-    "tenant": "tenant id"
-}
-```
-In this json we have to take 3 of these values and set their values on the "config.py" file.
-```
-CLIENT_ID = <appId>
-PASSWORD = <password>
-TENANT_ID = <tenant>
-```
-
-### Retrieve service principal for configuration
-In case you have created yourself the service principal you don't need to execute this step, because what we will do is to retrieve the info is to retrieve the same info that you get on the json while creating the service principal.
-
-First you need to enter the Secrets tab from the AKV
-
-![Secrets_Azure](./images_readme/Cap1.PNG)
-
-Copy the name the name of that secret, the display-name of your service principal.
-
-![Secrets_Azure](./images_readme/Cap3.PNG)
-
-Now execute the following command with that display-name.
-```
-az ad sp list --display-name <name>
-```
-
-You will get a very long json from which the information we need is at the very begining.
-```
-[
-  {
-    "accountEnabled": "True",
-    "addIns": [],
-    "alternativeNames": [],
-    "appDisplayName": "sdis1glbsp3blkpocauth001",
-    "appId": "07e9b304-3036-46bb-af24-1eac6124fb48",
-    "appOwnerTenantId": "35595a02-4d6d-44ac-99e1-f9ab4cd872db",
-    "appRoleAssignmentRequired": false,
-    "appRoles": [],
-    ...
-  }
-]
-```
-You can set now 2 of the variables from the config.py file with the "appOwnerTenantId" and "appId".
-```
-CLIENT_ID = <appId>
-TENANT_ID = <appOwnerTenantId>
-```
-After this you need to access again the secrets tab and click on the name of the secret that you copied before, to acces the info for that service pricipal.
-You will get a view like this.
-
-![Secrets_password](./images_readme/Cap2.PNG)
-
-Just click on the button "Show secret" and copy the information in "Secret value". This value is the password that you need to configure on the config.py.
-
-```
-PASSWORD = <secret-value>
-```
-
-### Create the key inside AKV to be compatible with Ethereum
-To create the key we will use on the demo you just need to enter the "Keys" tab inside the AKV. And there click on the Generate/Import button that is on top
-
-Once on the creation of the key make sure to select EC to make it an Elliptic Curve key and set the Elliptic Curve Name to "P-256K" as you can see on the image because that is the name Azure has given to the curve Secp256k1 that is the one used on Ethereum.
-
-![generate](./images_readme/Cap4.PNG)
-
-Enter again on Keys tab from your AKV and click on the key you have just created to see its info.
-
-![key_version](./images_readme/Cap5.PNG)
-
-There you have the version id that you need to paste on the config file.
-
-```
-KEY_VERSION = <version-id>
-```
-
-
+As you can see the execution accepts 4 parameters.
+- num_executions: Used to specify the total number of calls to AKV if executed in multithread mode it refers to the total number of execution not the number of executions per thread.
+- task: It can be either get (which just does the get of the key from AKV), sign (which caches the key on the first call and then only signs transactions) or both (which instead of caching the key, asks for it before each sign transaction).
+- mode: This is used to specify one thread or many with the keywords (single, multi)
+- num_threads: This last argument is only used in multithread to specify the number of threads of the execution.
