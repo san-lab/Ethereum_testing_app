@@ -25,3 +25,12 @@ As you can see the execution accepts 4 parameters.
 - task: It can be either get (which just does the get of the key from AKV), sign (which caches the key on the first call and then only signs transactions) or both (which instead of caching the key, asks for it before each sign transaction).
 - mode: This is used to specify one thread or many with the keywords (single, multi)
 - num_threads: This last argument is only used in multithread to specify the number of threads of the execution.
+
+## Note
+If you get any errors when installing the secp256k1.
+Try to execute
+```
+sudo apt install libsecp256k1-dev
+```
+to install the dev version of the underlining library.
+After that try again to install the dependencies.
